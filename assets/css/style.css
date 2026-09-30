@@ -318,6 +318,26 @@ img {
   margin-bottom: 40px;
 }
 
+.post-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid #ddd;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.post-content th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
 .post-content h2 {
   margin-top: 36px;
 }
