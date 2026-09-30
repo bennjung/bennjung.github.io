@@ -16,13 +16,13 @@ share: true
 현대 CPU는 작업이 전환될때 끝과 시작 명령을 *거의* 동시에 실행한다. 즉, 어떤 작업이 끝나기도전에 다른 작업이 수행된다. 분기문도 마찬가지로 조건이 확정되기전에 명령어를 실행하는데, 이때 분기 예측을 사용한다.
 간단한 반복문으로 살펴보자. 
 
-``` title:branch_A.c
+``` c title:branch_A.c
 // branch_A.c
 int idx = 0;
 while (idx < 100) idx++;
 ```
 
-``` title:branch_A.asm
+``` assembly title:branch_A.asm
 // branch_A.asm
 mov eax, 0        ; idx = 0
 
@@ -41,38 +41,42 @@ idx 값을 보라. idx값이 계속 증가하면서 조건문의 True 상태가 
 분기 예측은 일관성이다. 동일한 결과가 여러번 나오거나 데이터가 연속성을 가질 경우 분기 패턴을 가지게 된다.
 당연히 분기 예측은 100%가 아니다. 다른 코드를 보자.
 
-``` title:branch_B_1.c
+``` c title:branch_B_1.c
 // branch_B_1.c
-int values[100] = {1,5,53,10,12,77,85, ...} // 1-100 까지 무작위 원소
+// 1-100 까지 무작위 원소
+int values[100] = {1,5,53,10,12,77,85, ...} 
 int count = 0;
+// 1일 때만 증가
 for (int i = 0; i < 100; i++) {
-	if (values[i] == 1 ) count++; // 1일 때만 증가
+	if (values[i] == 1 ) count++; 
 }
 ```
 
 배열 안의 원소들은 무작위로 배치되어있다. 1이 아닌 경우가 반복되면, cpu는 다음분기를 거짓으로 예측한다.
+<br>
 
-배열   :  1  5  53  10  12  77  85 ...
-조건문:  T  F  F    F     F   F   F ...
+배열  : 1  5  3  10  12  77  85 ... <br>
+조건문: T  F  F  F    F   F   F ...
 
 이 코드에서 조건만 살짝 바꿔보면 어떨까?
 
-``` title:branch_B_2.c
+``` c title:branch_B_2.c
 // branch_B_2.c
 int values[100] = {1,5,53,10,12,77,85, ...} 
 int count = 0;
 for (int i = 0; i < 100; i++) {
-	if (values[i] <= 50 ) count++; // 50 이하면 증가 
+	// 50 이하면 증가 
+	if (values[i] <= 50 ) count++; 
 }
 ```
 
 조건 결과에 일관성이 없다. cpu는 예측을 하더라도, 눈 감고 찍는것과 진배없다. 왜냐하면 50이하의 숫자는 여러 조합이 가능해 특정 규칙을 만들어낼 수 없다.
 
-배열   :  1  5  53  10  12  77  85 ...
+배열   :  1  5  53  10  12  77  85 ... <br>
 조건문:  T  T  F    T    T    F   F ...
 
 중요한건 조건이 판정되고나서다. 입력 데이터와 조건식의 형태에 따라 분기예측률이 달라진다. cpu는 컴파일과 런타임 모든 환경에서 분기 결과에 대한 판정과 학습을 한다. 
-지금까지 대략적인 분기 예측 과정을 살펴봤다. 이제 이론에서 실행?(실험?)으로 넘어가보자.
+지금까지 대략적인 분기 예측 과정을 살펴봤다. 이제 컴퓨터를 괴롭힐 시간이다.
 
 
 ### 0x02. Branch Mark
@@ -87,7 +91,8 @@ for (int i = 0; i < 100; i++) {
 | Input Data | Random, Sorted Data(0,1) |
 | Metrics    | Execution Time           |
 
-``` title:Branch_mark.c
+``` c title:Branch_mark.c
+//Branch_mark.c
 #define N 100'000'000 
 unsigned char random_data[N];
 unsigned char sorted_data[N];
@@ -107,7 +112,7 @@ long count_ones(const unsigned char *values) {
 
 ![컴파일 최적화 없이 측정한 분기 예측 결과]({{ '/assets/images/branch-prediction/unoptimized.png' | relative_url }}){: width="461"}
 
-**`-O0` 사용(컴파일 최적화 비활성)**
+<b>컴파일 최적화 비활성</b>
 
 데이터(배열)별로 100회씩 실험 했고, 그중 유의미한 데이터를 70개 선별했다. 
 우리의 관심사는 분기 패턴이다. 정렬된 원소의 예측률은 100%에 가까운 반면 무작위 원소는 50%를 겨우 넘었다. 가설과 거의 일치한다. 분기 예측을 실패하면 연산횟수가 늘어나므로 당연히 실행시간에서도 차이가 난다.
