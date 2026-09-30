@@ -13,7 +13,7 @@ share: true
  > 분기 예측(Branch Prediction)은 CPU가 실행경로를 미리 예측하는 기술이다
  
 ### 0x01. Branch Patterns
-현대 CPU는 작업이 전환될때 끝과 시작 명령을 *거의* 동시에 실행한다. 즉, 어떤 작업이 끝나기도전에 다른 작업이 수행된다. 분기문도 마찬가지로 조건이 확정되기전에 명령어를 실행하는데, 이때 분기 예측을 사용한다.
+현대 CPU는 작업이 전환될때 끝과 시작 명령을 *거의* 동시에 실행한다. 즉, 어떤 작업이 끝나기 전에 다른 작업이 수행된다. if문도 마찬가지로 조건이 확정되기전에 명령어를 실행하는데, 이때 분기 예측을 사용한다.
 간단한 반복문으로 살펴보자. 
 
 ``` 
@@ -92,7 +92,7 @@ for (int i = 0; i < 100; i++) {
 | Metrics    | Execution Time           |
 
 ```
-//Branch_mark.c
+## Branch_mark.c
 #define N 100'000'000 
 unsigned char random_data[N];
 unsigned char sorted_data[N];
