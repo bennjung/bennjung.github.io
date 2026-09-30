@@ -16,14 +16,14 @@ share: true
 현대 CPU는 작업이 전환될때 끝과 시작 명령을 *거의* 동시에 실행한다. 즉, 어떤 작업이 끝나기도전에 다른 작업이 수행된다. 분기문도 마찬가지로 조건이 확정되기전에 명령어를 실행하는데, 이때 분기 예측을 사용한다.
 간단한 반복문으로 살펴보자. 
 
-``` c title:branch_A.c
-// branch_A.c
+``` 
+## branch_A.c
 int idx = 0;
 while (idx < 100) idx++;
 ```
 
-``` assembly title:branch_A.asm
-// branch_A.asm
+``` 
+## branch_A.asm
 mov eax, 0        ; idx = 0
 
 LOOP:
@@ -41,8 +41,8 @@ idx 값을 보라. idx값이 계속 증가하면서 조건문의 True 상태가 
 분기 예측은 일관성이다. 동일한 결과가 여러번 나오거나 데이터가 연속성을 가질 경우 분기 패턴을 가지게 된다.
 당연히 분기 예측은 100%가 아니다. 다른 코드를 보자.
 
-``` c title:branch_B_1.c
-// branch_B_1.c
+``` 
+## branch_B_1.c
 // 1-100 까지 무작위 원소
 int values[100] = {1,5,53,10,12,77,85, ...} 
 int count = 0;
@@ -60,7 +60,7 @@ for (int i = 0; i < 100; i++) {
 
 이 코드에서 조건만 살짝 바꿔보면 어떨까?
 
-``` c title:branch_B_2.c
+``` 
 // branch_B_2.c
 int values[100] = {1,5,53,10,12,77,85, ...} 
 int count = 0;
@@ -91,7 +91,7 @@ for (int i = 0; i < 100; i++) {
 | Input Data | Random, Sorted Data(0,1) |
 | Metrics    | Execution Time           |
 
-``` c title:Branch_mark.c
+```
 //Branch_mark.c
 #define N 100'000'000 
 unsigned char random_data[N];
