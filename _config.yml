@@ -1,6 +1,6 @@
 title: "ggulgem city"
 description: "A personal blog about mixed topics — tech, life, and everything in between."
-url: ""
+url: "https://bennjung.github.io"
 baseurl: ""
 permalink: /:year/:month/:day/:title/
 
