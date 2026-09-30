@@ -112,7 +112,7 @@ long count_ones(const unsigned char *values) {
 
 ![컴파일 최적화 없이 측정한 분기 예측 결과]({{ '/assets/images/branch-prediction/unoptimized.png' | relative_url }}){: width="461"}
 
-<b>컴파일 최적화 비활성</b>
+<b>&lt; 컴파일 최적화 비활성(-O0) &gt;</b>
 
 데이터(배열)별로 100회씩 실험 했고, 그중 유의미한 데이터를 70개 선별했다. 
 우리의 관심사는 분기 패턴이다. 정렬된 원소의 예측률은 100%에 가까운 반면 무작위 원소는 50%를 겨우 넘었다. 가설과 거의 일치한다. 분기 예측을 실패하면 연산횟수가 늘어나므로 당연히 실행시간에서도 차이가 난다.
@@ -121,7 +121,7 @@ long count_ones(const unsigned char *values) {
 
 ![컴파일 최적화 여부에 따른 실행시간 비교]({{ '/assets/images/branch-prediction/optimization-comparison.png' | relative_url }}){: width="523"}
 
-**컴파일 최적화 X `-O0` vs 컴파일 최적화 O `-O2`**
+**&lt; 컴파일 최적화 X (-O0) vs 컴파일 최적화 O (-O2) &gt;**
 
 흥미로운 결과가 나왔다! 컴파일 최적화를 하면 두 데이터 모두 비슷한 성능을 보여준다. 
 특히 무작위 데이터는 34배에 달하는 성능 향상을 보여준다. 어셈블리를 확인해보니 점프가 사라졌다. 컴파일러가 무슨 마법을 부린걸까? <br>
